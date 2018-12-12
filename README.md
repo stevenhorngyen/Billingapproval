@@ -8,27 +8,32 @@ Provide Partner the ability to retrieve list of charges and respond with either 
 4. Run as Java Application
 
 1. Retrieve Billing Details with PartnerId 1, COMCAST
-[GET]
+
 ```
+[GET]
 localhost:8080/api/details/partner/1/billing-date/2018-12-01
 ```
-[![Image](https://drive.google.com/open?id=1HOT0KxezWWwveS8tkLxT_KCl__ReSvB5)]
+<img src="images/partner1.png" width="640" height="480">
 
 2. Approve or Decline by PartnerId and BillingId
-[POST]
+
 ```
+[POST]
 localhost:8080/api/approve/partner/1/billing/1
 localhost:8080/api/approve/partner/1/billing/2
 ```
-[![Image](https://drive.google.com/open?id=1vm1tcWa8pMct6U_CZtOfY2J8ynrjiXBn)]
+<img src="images/approve%20by%20billingId.png" width="640" height="480">
 
 3. Approve or Decline All by PartnerId and Billling Date 
+
 ```
 [POST]
 localhost:8080/api/approve-all/partner/1/billing-date/2018-12-01
 localhost:8080/api/decline-all/partner/1/billing-date/2018-12-01
 ```
+<img src="images/decline%20all.png" width="640" height="480">
 Result 
+<img src="images/Result%20End.png" width="640" height="480">
 
 ### Running the tests
 1. Goto BillingApplicationTests.java
