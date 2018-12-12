@@ -7,6 +7,7 @@ Provide Partner the ability to retrieve list of charges and respond with either 
 3. Goto BillingApplication.java
 4. Run as Java Application
 
+### Examples
 1. Retrieve Billing Details with PartnerId 1, COMCAST
 
 ```
@@ -32,7 +33,8 @@ localhost:8080/api/approve-all/partner/1/billing-date/2018-12-01
 localhost:8080/api/decline-all/partner/1/billing-date/2018-12-01
 ```
 <img src="images/decline%20all.png" width="640" height="480">
-Result 
+
+4. Result 
 <img src="images/Result%20End.png" width="640" height="480">
 
 ### Running the tests
