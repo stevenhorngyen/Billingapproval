@@ -26,46 +26,47 @@ public class BillingServiceController {
     @Autowired
     private BillingService billingService;
 
-    @RequestMapping(method= RequestMethod.GET, value="/details/{date}")
-    ResponseEntity<List<BillingDetails>> getAllBillingDetailsForDate(@PathVariable(value="date")String dateString){
-        return new ResponseEntity<>(billingService.getBillingDetails(dateString),
+    @RequestMapping(method= RequestMethod.GET, value="/details/partner/{partnerId}/billing-date/{date}")
+    ResponseEntity<List<BillingDetails>> getAllBillingDetailsForDate(
+    		@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
+        return new ResponseEntity<>(billingService.getBillingDetails(partnerId, dateString),
         		HttpStatus.OK);
     }
     
-    @RequestMapping(method= RequestMethod.POST, value="/approve/{billingId}")
-    ResponseEntity<?> approveBillingDetail(@PathVariable(value="billingId")Long billingId){
+    @RequestMapping(method= RequestMethod.POST, value="/approve/partner/{partnerId}/billing/{billingId}")
+    ResponseEntity<?> approveBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("billingId") Long billingId){
     	try{
-    		billingService.updateBillingDetail(billingId, "Approval");
+    		billingService.updateBillingDetail(partnerId, billingId, "Approval");
     		return new ResponseEntity<>(HttpStatus.OK);
     	}catch(Exception e){
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     }
     
-    @RequestMapping(method= RequestMethod.POST, value="/decline/{billingId}")
-    ResponseEntity<?> declineBillingDetail(@PathVariable(value="billingId")Long billingId){
+    @RequestMapping(method= RequestMethod.POST, value="/decline/partner/{partnerId}/billing/{billingId}")
+    ResponseEntity<?> declineBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("billingId") Long billingId){
     	try{
-    		billingService.updateBillingDetail(billingId, "Decline");
+    		billingService.updateBillingDetail(partnerId, billingId, "Decline");
     		return new ResponseEntity<>(HttpStatus.OK);
     	}catch(Exception e){
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     }
     
-    @RequestMapping(method= RequestMethod.POST, value="/approve-all/{date}")
-    ResponseEntity<?> approveAllBillingDetail(@PathVariable(value="date")String dateString){
+    @RequestMapping(method= RequestMethod.POST, value="/approve-all/partner/{partnerId}/billing-date/{date}")
+    ResponseEntity<?> approveAllBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
     	try{
-    		billingService.updateBillingDetail(dateString, "Approval");
+    		billingService.updateBillingDetail(partnerId, dateString, "Approval");
     		return new ResponseEntity<>(HttpStatus.OK);
     	}catch(Exception e){
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     	}
     }
     
-    @RequestMapping(method= RequestMethod.POST, value="/decline-all/{date}")
-    ResponseEntity<?> declineAllBillingDetail(@PathVariable(value="date")String dateString){
+    @RequestMapping(method= RequestMethod.POST, value="/decline-all/partner/{partnerId}/billing-date/{date}")
+    ResponseEntity<?> declineAllBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
     	try{
-    		billingService.updateBillingDetail(dateString, "Decline");
+    		billingService.updateBillingDetail(partnerId, dateString, "Decline");
     		return new ResponseEntity<>(HttpStatus.OK);
     	}catch(Exception e){
     		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

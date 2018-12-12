@@ -10,5 +10,5 @@ import com.netflix.billing.data.entity.BillingMonthly;
 
 @Repository
 public interface BillingMonthlyRepository extends JpaRepository<BillingMonthly, Long>{
-	List<BillingMonthly> findByBillingDate(Date date);
+	List<BillingMonthly> findByBillingDateAndPartnerId(Date date, long partnerId);
 }

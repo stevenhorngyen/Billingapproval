@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.netflix.billing.data.entity.BillingMonthly;
+import com.netflix.billing.data.entity.Currency;
 import com.netflix.billing.data.entity.SubscriptionPrice;
 import com.netflix.billing.data.entity.SubscriptionType;
 import com.netflix.billing.data.entity.User;
 import com.netflix.billing.data.entity.UserHasSubscription;
 import com.netflix.billing.data.repository.BillingMonthlyRepository;
+import com.netflix.billing.data.repository.CurrencyRepository;
 import com.netflix.billing.data.repository.SubscriptionPriceRepository;
 import com.netflix.billing.data.repository.SubscriptionTypeRepository;
 import com.netflix.billing.data.repository.UserHasSubscriptionRepository;
@@ -30,7 +32,7 @@ public class BillingService {
 	private BillingMonthlyRepository billingMonthlyRepository;
 	private SubscriptionTypeRepository subscriptionTypeRepository;
 	private SubscriptionPriceRepository subscriptionPriceRepository;
-	
+	private CurrencyRepository currencyRepository;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Autowired
@@ -38,18 +40,25 @@ public class BillingService {
 			UserHasSubscriptionRepository userHasSubscriptionRepository,
 			BillingMonthlyRepository billingMonthlyRepository,
 			SubscriptionTypeRepository subscriptionTypeRepository,
-			SubscriptionPriceRepository subscriptionPriceRepository){
+			SubscriptionPriceRepository subscriptionPriceRepository,
+			CurrencyRepository currencyRepository){
 		this.userRepository = userRepository;
 		this.userHasSubscriptionRepository = userHasSubscriptionRepository;
 		this.billingMonthlyRepository = billingMonthlyRepository;
 		this.subscriptionTypeRepository = subscriptionTypeRepository;
 		this.subscriptionPriceRepository = subscriptionPriceRepository;
+		this.currencyRepository = currencyRepository;
 	}
 	
-	public List<BillingDetails> getBillingDetails(String dateString){
+	public List<BillingDetails> getBillingDetails(Long partnerId, String dateString){
 		Date date = this.createDateFromDateString(dateString);
 		List<BillingDetails> billingDetails = new ArrayList<BillingDetails>();
-		Iterable<BillingMonthly> billingMonthly = billingMonthlyRepository.findByBillingDate(new java.sql.Date(date.getTime()));
+		Iterable<BillingMonthly> billingMonthly = billingMonthlyRepository.findByBillingDateAndPartnerId(
+				new java.sql.Date(date.getTime()), partnerId);
+
+		UserHasSubscription userHasSubscription1 = userHasSubscriptionRepository.findByUserId(new Long(1001));
+		System.out.println(userHasSubscription1.getPartnerId());
+		System.out.println(date);
 		if(billingMonthly != null){
 			for (BillingMonthly bm : billingMonthly){
 				BillingDetails billingDetail = new BillingDetails();
@@ -59,11 +68,12 @@ public class BillingService {
                 	billingDetail.setBillingId(bm.getId());
                 	billingDetail.setBillingDate(date);
                 	billingDetail.setUserId(bm.getUserId());
+                	billingDetail.setPartnerId(partnerId);
                 	billingDetail.setStatus(bm.getStatus());
                 	if(userHasSubscription != null) {
-        				Optional<User> user = userRepository.findById(
-        						userHasSubscription.getUserId());
+        				Optional<User> user = userRepository.findById(userHasSubscription.getUserId());
         				if(user != null){//user info
+            				Currency currency = currencyRepository.findByCountryId(user.get().getCountryId());
             				Optional<SubscriptionType> subscriptionType = subscriptionTypeRepository.findById(
             						userHasSubscription.getSubscriptionTypeId());
             				SubscriptionPrice subscriptionPrice = subscriptionPriceRepository.findByIdAndCountryId(
@@ -74,6 +84,9 @@ public class BillingService {
               				if(subscriptionPrice != null){
                 				billingDetail.setPrice(subscriptionPrice.getPrice());
             				}
+              				if(currency != null){
+              					billingDetail.setCurrencyType(currency.getDescription());
+              				}
         				}
                 	}
                 }
@@ -83,17 +96,22 @@ public class BillingService {
 		return billingDetails;		
 	}
 	
-	public void updateBillingDetail(Long billingId, String status){
+	public void updateBillingDetail(Long partnerId, Long billingId, String status) throws Exception{
 		BillingMonthly billingMonthlyUpdate = billingMonthlyRepository.getOne(billingId);
 		if(billingMonthlyUpdate != null){
-			billingMonthlyUpdate.setStatus(status);
-			billingMonthlyRepository.save(billingMonthlyUpdate);
+			if(billingMonthlyUpdate.getPartnerId() != partnerId){
+				throw new Exception();
+			}else{
+				billingMonthlyUpdate.setStatus(status);
+				billingMonthlyRepository.save(billingMonthlyUpdate);
+			}
 		}
 	}
 	
-	public void updateBillingDetail(String dateString, String status){
+	public void updateBillingDetail(Long partnerId, String dateString, String status){
 		Date date = this.createDateFromDateString(dateString);
-		Iterable<BillingMonthly> billingMonthly = billingMonthlyRepository.findByBillingDate(new java.sql.Date(date.getTime()));
+		Iterable<BillingMonthly> billingMonthly = billingMonthlyRepository.findByBillingDateAndPartnerId
+				(new java.sql.Date(date.getTime()), partnerId);
 		if(billingMonthly != null){
 			for (BillingMonthly bm : billingMonthly){
 				bm.setStatus(status);

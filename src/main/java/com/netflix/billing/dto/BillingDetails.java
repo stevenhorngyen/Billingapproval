@@ -5,9 +5,11 @@ import java.util.Date;
 public class BillingDetails {
 	private long billingId;
 	private Date billingDate;
+	private long partnerId;
 	private long userId;
 	private String subscriptionType;
 	private double price;
+	private String currencyType;
 	private String status;
 	
 	public long getBillingId() {
@@ -21,6 +23,18 @@ public class BillingDetails {
 	}
 	public void setBillingDate(Date billingDate) {
 		this.billingDate = billingDate;
+	}
+	public long getPartnerId() {
+		return partnerId;
+	}
+	public void setPartnerId(long partnerId) {
+		this.partnerId = partnerId;
+	}
+	public String getCurrencyType() {
+		return currencyType;
+	}
+	public void setCurrencyType(String currencyType) {
+		this.currencyType = currencyType;
 	}
 	public long getUserId() {
 		return userId;

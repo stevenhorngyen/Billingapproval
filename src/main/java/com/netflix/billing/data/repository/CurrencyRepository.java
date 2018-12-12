@@ -7,5 +7,5 @@ import com.netflix.billing.data.entity.Currency;
 
 @Repository
 public interface CurrencyRepository extends PagingAndSortingRepository<Currency, Long>{
-
+	Currency findByCountryId(Long countryId);
 }
