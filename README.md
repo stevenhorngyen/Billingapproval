@@ -50,8 +50,8 @@ The billing objects are retrieved from BillingMonthly entity/table;
 assuming there's an existing job/process that will pull billable user charges for current month based on user subscription start date into this BillingMonthly entity/table e.g. this service is pre-ingested with 2018 December billing data.
 
 ### Schema and Data 
-billing/src/main/resources/schema.sql
-billing/src/main/resources/data.sql
+1. billing/src/main/resources/schema.sql
+2. billing/src/main/resources/data.sql
 
 ### Questions?
 stevenhorngyen@gmail.com
