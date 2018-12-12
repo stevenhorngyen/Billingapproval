@@ -1,5 +1,5 @@
 # Billing Service
-Enable Partner the ability to retrieve list of charges and respond with either “Approval” or “Decline”
+Provide Partner the ability to retrieve list of charges and respond with either “Approval” or “Decline”
 
 ### Running Billing Service
 1. Open Eclipse
@@ -12,12 +12,16 @@ Enable Partner the ability to retrieve list of charges and respond with either �
 ```
 localhost:8080/api/details/partner/1/billing-date/2018-12-01
 ```
+[![Image](https://drive.google.com/open?id=1HOT0KxezWWwveS8tkLxT_KCl__ReSvB5)]
+
 2. Approve or Decline by PartnerId and BillingId
 [POST]
 ```
 localhost:8080/api/approve/partner/1/billing/1
 localhost:8080/api/approve/partner/1/billing/2
 ```
+[![Image](https://drive.google.com/open?id=1vm1tcWa8pMct6U_CZtOfY2J8ynrjiXBn)]
+
 3. Approve or Decline All by PartnerId and Billling Date 
 ```
 [POST]
