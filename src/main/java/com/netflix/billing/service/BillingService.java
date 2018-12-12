@@ -50,6 +50,14 @@ public class BillingService {
 		this.currencyRepository = currencyRepository;
 	}
 	
+	/**
+	 * Retrieve Billing Details by billing date and partnerId
+	 * @param partnerId
+	 * Partner Id
+	 * @param dateString
+	 * Billing Date
+	 * @return List
+	 */
 	public List<BillingDetails> getBillingDetails(Long partnerId, String dateString){
 		Date date = this.createDateFromDateString(dateString);
 		List<BillingDetails> billingDetails = new ArrayList<BillingDetails>();
@@ -96,11 +104,22 @@ public class BillingService {
 		return billingDetails;		
 	}
 	
+	/**
+	 * Update charges with the status based on billingId and partnerId
+	 * @param partnerId
+	 * Partner Id
+	 * @param billingId
+	 * Billing Id
+	 * @param status
+	 * Charges/Billing Status
+	 * @throws Exception
+	 * Throws exception when billing Id is not found under specified partnerId
+	 */
 	public void updateBillingDetail(Long partnerId, Long billingId, String status) throws Exception{
 		BillingMonthly billingMonthlyUpdate = billingMonthlyRepository.getOne(billingId);
 		if(billingMonthlyUpdate != null){
 			if(billingMonthlyUpdate.getPartnerId() != partnerId){
-				throw new Exception();
+				throw new Exception("Incorrect Partner Id !!");
 			}else{
 				billingMonthlyUpdate.setStatus(status);
 				billingMonthlyRepository.save(billingMonthlyUpdate);
@@ -108,6 +127,15 @@ public class BillingService {
 		}
 	}
 	
+	/**
+	 * Update charges with the status based on billing date and partnerId
+	 * @param partnerId
+	 * Partner Id
+	 * @param dateString
+	 * Billing Date
+	 * @param status
+	 * Charges/Billing Status
+	 */
 	public void updateBillingDetail(Long partnerId, String dateString, String status){
 		Date date = this.createDateFromDateString(dateString);
 		Iterable<BillingMonthly> billingMonthly = billingMonthlyRepository.findByBillingDateAndPartnerId
@@ -120,6 +148,12 @@ public class BillingService {
 		}
 	}
 	
+	/**
+	 * format input date string
+	 * @param dateString
+	 * Date in String format
+	 * @return java.util.Date
+	 */
     private Date createDateFromDateString(String dateString){
         Date date = null;
         if(dateString != null) {

@@ -40,6 +40,10 @@ public class BillingApplicationTests {
 	private MockMvc mockMvc;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+	/**
+	 * Unit Test - testing Billing Service api calls
+	 * @throws Exception when test result is not as expected
+	 */
 	@Test
 	public void testBillingDetails() throws Exception{
 		Date date = DATE_FORMAT.parse("2018-12-01");

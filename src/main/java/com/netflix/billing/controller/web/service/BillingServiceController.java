@@ -25,7 +25,15 @@ import com.netflix.billing.service.BillingService;
 public class BillingServiceController {
     @Autowired
     private BillingService billingService;
-
+    
+    /**
+     * Retrieve billing details
+     * @param partnerId
+     * Partner Id
+     * @param dateString
+     * Billing Date
+     * @return ResponseEntity
+     */
     @RequestMapping(method= RequestMethod.GET, value="/details/partner/{partnerId}/billing-date/{date}")
     ResponseEntity<List<BillingDetails>> getAllBillingDetailsForDate(
     		@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
@@ -33,6 +41,14 @@ public class BillingServiceController {
         		HttpStatus.OK);
     }
     
+    /**
+     * Approve charges by billingId and partnerId
+     * @param partnerId
+     * Partner Id
+     * @param billingId
+     * Billing Id
+     * @return ResponseEntity
+     */
     @RequestMapping(method= RequestMethod.POST, value="/approve/partner/{partnerId}/billing/{billingId}")
     ResponseEntity<?> approveBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("billingId") Long billingId){
     	try{
@@ -43,6 +59,14 @@ public class BillingServiceController {
     	}
     }
     
+    /**
+     * Decline charges by billingId and partnerId
+     * @param partnerId
+     * Partner Id
+     * @param billingId
+     * Billing Id
+     * @return ResponseEntity
+     */
     @RequestMapping(method= RequestMethod.POST, value="/decline/partner/{partnerId}/billing/{billingId}")
     ResponseEntity<?> declineBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("billingId") Long billingId){
     	try{
@@ -53,6 +77,14 @@ public class BillingServiceController {
     	}
     }
     
+    /**
+     * Approve all charges by billing date per partnerId
+     * @param partnerId
+     * Partner Id
+     * @param dateString
+     * Billing Date
+     * @return ResponseEntity
+     */
     @RequestMapping(method= RequestMethod.POST, value="/approve-all/partner/{partnerId}/billing-date/{date}")
     ResponseEntity<?> approveAllBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
     	try{
@@ -63,6 +95,14 @@ public class BillingServiceController {
     	}
     }
     
+    /**
+     * Decline all charges by billing date per partnerId
+     * @param partnerId
+     * Partner Id
+     * @param dateString
+     * Billing Date
+     * @return ResponseEntity
+     */
     @RequestMapping(method= RequestMethod.POST, value="/decline-all/partner/{partnerId}/billing-date/{date}")
     ResponseEntity<?> declineAllBillingDetail(@PathVariable("partnerId") Long partnerId, @PathVariable("date") String dateString){
     	try{
