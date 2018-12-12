@@ -40,6 +40,7 @@ localhost:8080/api/decline-all/partner/1/billing-date/2018-12-01
 ### Running the tests
 1. Goto BillingApplicationTests.java
 2. Run as JUnit Test
+<img src="images/unit.test.png" width="640" height="480">
 
 ### Test coverage
 Testing Billing Service api end points and expected response
